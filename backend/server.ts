@@ -15,13 +15,28 @@ app.use(express.json());
 //подключаем роутеры
 app.use('/api', router);
 
-sequelize
-  .sync({ force: true })
-  .then(() => {
+// sequelize
+//   .sync({ force: true })
+//   .then(() => {
+//     app.listen(PORT, () => {
+//       console.log(`Server is running on port ${PORT}`);
+//     });
+//   })
+//   .catch((err) => {
+//     console.error('Unable to connect to the database:', err);
+//   });
+
+async function startServer() {
+  try {
+    await sequelize.sync({ force: true });
+    console.log('All models were synchronized successfully.');
+
     app.listen(PORT, () => {
       console.log(`Server is running on port ${PORT}`);
     });
-  })
-  .catch((err) => {
+  } catch (err) {
     console.error('Unable to connect to the database:', err);
-  });
+  }
+}
+
+startServer();

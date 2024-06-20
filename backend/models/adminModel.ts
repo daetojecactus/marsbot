@@ -1,5 +1,6 @@
 import { sequelize } from '../db';
 import { DataTypes } from 'sequelize';
+import bcrypt from 'bcrypt';
 
 const Admin = sequelize.define(
   'Admin',
@@ -27,12 +28,17 @@ const Admin = sequelize.define(
       allowNull: false,
     },
     //имя админа
-    name: {
+    firstName: {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    //аватарка (фото)
-    avatar: {
+    //фамилия админа
+    lastName: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    //почта
+    mail: {
       type: DataTypes.STRING,
       allowNull: false,
     },
@@ -40,7 +46,21 @@ const Admin = sequelize.define(
   {
     tableName: 'admins', //имя таблицы в бд
     timestamps: true, //автоматическое добавление createdAt и updatedAt
+    //хуки для хэширования паролей перед сохранением
+    hooks: {
+      beforeCreate: async (admin: any) => {
+        const salt = await bcrypt.genSalt(10);
+        admin.password = await bcrypt.hash(admin.password, salt);
+      },
+      beforeUpdate: async (admin: any) => {
+        if (admin.changed('password')) {
+          const salt = await bcrypt.genSalt(10);
+          admin.password = await bcrypt.hash(admin.password, salt);
+        }
+      },
+    },
   },
 );
+
 
 export default Admin;

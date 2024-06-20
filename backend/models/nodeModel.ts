@@ -21,7 +21,7 @@ const Node = sequelize.define(
       type: DataTypes.INTEGER,
       allowNull: true,
       references: {
-        model: 'Node', //таблица на которую ссылается parentId
+        model: 'nodes', //таблица на которую ссылается parentId
         key: 'id',
       },
     },

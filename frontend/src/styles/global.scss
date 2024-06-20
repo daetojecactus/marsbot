@@ -1,0 +1,43 @@
+html {
+  box-sizing: border-box;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
+
+img {
+  height: auto;
+  max-width: 100%;
+  object-fit: cover;
+}
+
+a {
+  text-decoration: none;
+}
+
+body {
+  font-family: Open Sans;
+  margin: 0;
+  color: var(--text-color);
+  font-size: 14px;
+  line-height: 1.5715;
+  background-color: var(--body-background);
+}
+
+:root {
+  --primary-color: #20a8d8;
+  --primary-color-lighten: #74cbea;
+  --text-color: #22232b;
+  --text-color-secondary: #3e515b;
+  --body-background: #e6ebef;
+  --white-color: #fff;
+  --color-bg-grey: #f2f5f7;
+}
+
+.container {
+  padding: 20px;
+  margin: auto;
+}
