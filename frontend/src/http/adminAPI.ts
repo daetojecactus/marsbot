@@ -9,3 +9,14 @@ export const createAdmin = async (admin: string) => {
     throw new Error("Ошибка при отправке запроса");
   }
 };
+
+
+export const fetchAdminInfo = async (id: number) => {
+  try {
+    const { data } = await host.get(`/api/admin/${id}`);
+    console.log("Ответ от сервера:", data);
+    return data;
+  } catch (error) {
+    throw new Error("Ошибка при отправке запроса");
+  }
+};

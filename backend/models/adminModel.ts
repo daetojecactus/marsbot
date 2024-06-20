@@ -63,4 +63,6 @@ const Admin = sequelize.define(
 );
 
 
+
+
 export default Admin;

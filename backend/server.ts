@@ -28,7 +28,7 @@ app.use('/api', router);
 
 async function startServer() {
   try {
-    await sequelize.sync({ force: true });
+    await sequelize.sync();
     console.log('All models were synchronized successfully.');
 
     app.listen(PORT, () => {

@@ -3,10 +3,12 @@ import React, { useEffect, useState } from "react";
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
 import { Button, Form, Input } from "antd";
 import { loginAdmin } from "../http/authAPI";
+import { useRouter } from "next/router";
 
-export default function index() {
+export default function loginPage() {
   const [form] = Form.useForm();
   const [clientReady, setClientReady] = useState<boolean>(false);
+  const router = useRouter();
 
   // To disable submit button at the beginning.
   useEffect(() => {
@@ -15,13 +17,16 @@ export default function index() {
 
   const onFinish = async (values: any) => {
     try {
-      const response = await loginAdmin(values);
+      const { login, password } = values;
+      console.log("Данные формы:", { login, password });
+      const response = await loginAdmin({ login, password });
 
       // Сохранение токена в localStorage
       localStorage.setItem("token", response.token);
 
       // Вывод алерта после успешного входа
       alert("Вы успешно вошли в систему!");
+      router.push("/panel");
 
       // Очистка формы после успешного входа
       form.resetFields();
@@ -40,7 +45,7 @@ export default function index() {
       onFinish={onFinish}
     >
       <Form.Item
-        name="username"
+        name="login"
         rules={[{ required: true, message: "Please input your username!" }]}
       >
         <Input
