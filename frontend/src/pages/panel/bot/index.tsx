@@ -5,20 +5,28 @@ import {
   UploadOutlined,
   UserOutlined,
   VideoCameraOutlined,
+  DeleteOutlined,
+  SettingOutlined,
+  PlusOutlined
 } from "@ant-design/icons";
-import { Button, Layout, Menu, theme } from "antd";
-import { useOneAdminInfo } from "../../hooks/useAdmin";
+import { Button, Layout, Menu, theme, Card, Col, Row, Flex } from "antd";
+import { useOneAdminInfo } from "../../../hooks/useAdmin";
+import { useGetAllNodes } from "../../../hooks/useNode";
+import Node from "../../../http/nodeAPI";
 
 const { Header, Sider, Content } = Layout;
 
-export default function PanelPage() {
+export default function PanelBot() {
   const [collapsed, setCollapsed] = useState(false);
-
   const {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
 
   const { oneAdminInfoHook: adminInfo, loading, error } = useOneAdminInfo();
+  const { nodes: allNodes, loading: nodesLoading } = useGetAllNodes();
+  const questionsArray: Node[] = allNodes.filter(
+    (item) => item.type === "question"
+  );
 
   return (
     <Layout style={{ minHeight: "100vh" }}>
@@ -48,7 +56,10 @@ export default function PanelPage() {
         />
       </Sider>
       <Layout>
-        <Header style={{ padding: 0, background: colorBgContainer }} className="header-panel">
+        <Header
+          style={{ padding: 0, background: colorBgContainer }}
+          className="header-panel"
+        >
           <Button
             type="text"
             icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
@@ -60,10 +71,11 @@ export default function PanelPage() {
             }}
           />
           {adminInfo ? (
-<p className="header-info">{adminInfo.firstName} {adminInfo.lastName}</p>
-          ) : (
-            <p>error
+            <p className="header-info">
+              {adminInfo.firstName} {adminInfo.lastName}
             </p>
+          ) : (
+            <p>error</p>
           )}
         </Header>
         <Content
@@ -74,20 +86,30 @@ export default function PanelPage() {
             borderRadius: borderRadiusLG,
           }}
         >
-          {loading ? (
-            <p>Loading...</p>
-          ) : error ? (
-            <p>Error: {error.message}</p>
-          ) : adminInfo ? (
-            <div>
-              <h2>Admin Information</h2>
-              <p>ID: {adminInfo.id}</p>
-              <p>Login: {adminInfo.login}</p>
-              <p>Role: {adminInfo.role}</p>
-            </div>
-          ) : (
-            <p>No admin information available</p>
-          )}
+          <Row gutter={[16, 16]}>
+            {questionsArray.map((question, index) => (
+              <Col span={8} key={index}>
+                <Card title={question.id} bordered={false}>
+                  <h3>{question.text}</h3>
+                  <Flex align="flex-start" gap="small">
+                    <Button type="primary" danger icon={<DeleteOutlined />}>
+                      Delete
+                    </Button>
+                    <Button type="primary" icon={<SettingOutlined />}>
+                      Edit
+                    </Button>
+                  </Flex>
+                </Card>
+              </Col>
+            ))}
+            <Col span={8}>
+              <Card title="NEW" bordered={false}>
+              <Flex align="center" justify="center">
+              <Button icon={<PlusOutlined />}/>
+              </Flex>
+              </Card>
+            </Col>
+          </Row>
         </Content>
       </Layout>
     </Layout>

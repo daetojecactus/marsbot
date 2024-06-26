@@ -1,7 +1,7 @@
 import { sequelize } from '../db';
 import { DataTypes } from 'sequelize';
 
-// Определение модели Node
+//определение модели Node
 const Node = sequelize.define(
   'Node',
   {

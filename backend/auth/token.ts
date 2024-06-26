@@ -3,8 +3,8 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-//cекретный ключ для подписи jwt
 const secret = process.env.SECRET_KEY || '';
+const tokenExpiration = '8h'; //срок жизни токена
 
 //генерация токена
 export function generateToken(admin: {
@@ -12,10 +12,14 @@ export function generateToken(admin: {
   login: string;
   role: number;
 }) {
-  return jwt.sign(admin, secret, { expiresIn: '1h' });
+  return jwt.sign(admin, secret, { expiresIn: tokenExpiration });
 }
 
 //проверка токена
-export function verifyToken(token: string) {
-  return jwt.verify(token, secret);
+export function verifyToken(token: string): jwt.JwtPayload {
+  try {
+    return jwt.verify(token, secret) as jwt.JwtPayload;
+  } catch (error) {
+    throw new Error('Token expired'); //обработка истекшего токена
+  }
 }

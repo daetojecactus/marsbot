@@ -1,6 +1,6 @@
 import React from "react";
-import { Button, Form, Input, Select } from "antd";
-import { createAdmin } from "../../http/adminAPI";
+import { Button, Form, Input, Select, message } from "antd";
+import { useCreateAdmin } from "../../hooks/useAdmin";
 
 const { Option } = Select;
 
@@ -28,18 +28,21 @@ const tailFormItemLayout = {
   },
 };
 
-export default function adminRegistration() {
+export default function AdminRegistration() {
   const [form] = Form.useForm();
+  const { createAdminHook, loading, error } = useCreateAdmin();
 
   const onFinish = async (values: any) => {
     try {
-      // Вызываем функцию для создания админа
-      const response = await createAdmin(values);
+      //вызываем функцию для создания админа
+      const response = await createAdminHook(values);
       console.log("Admin registered successfully:", response);
-      // Очищаем форму после успешной регистрации
+      //очищаем форму после успешной регистрации
+      message.success("Admin registered successfully:")
       form.resetFields();
-    } catch (error) {
+    } catch (error: any) {
       console.error("Failed to register admin:", error);
+      message.error(error)
     }
   };
 

@@ -1,6 +1,17 @@
 import { host } from "./index";
 
-export const createAdmin = async (admin: string) => {
+
+export default interface Admin {
+  id: number;
+  login: string;
+  role: string;
+  firstName: string;
+  lastName: string;
+  mail: string;
+}
+
+
+export const createAdminAPI = async (admin: Admin) => {
   try {
     const { data } = await host.post("/api/admin", admin);
     console.log("Ответ от сервера:", data);
@@ -11,7 +22,7 @@ export const createAdmin = async (admin: string) => {
 };
 
 
-export const fetchAdminInfo = async (id: number) => {
+export const OneAdminInfoAPI = async (id: number) => {
   try {
     const { data } = await host.get(`/api/admin/${id}`);
     console.log("Ответ от сервера:", data);

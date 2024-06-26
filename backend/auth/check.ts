@@ -7,20 +7,21 @@ export function authenticateToken(
   res: Response,
   next: NextFunction,
 ) {
-  //получаем токен из заголовка
   const authHeader = req.headers['authorization'];
   const token = authHeader && authHeader.split(' ')[1];
 
-  //если токен отсутствует то  возвращаем статус 401
-  if (!token) return res.sendStatus(401);
+  if (!token) {
+    return res.sendStatus(401); //401 если токен отсутствует
+  }
 
   try {
-    //проверяем токен и добавляем данные пользователя в запрос
-    const user = verifyToken(token);
-    (req as any).user = user;
+    const admin = verifyToken(token);
+    (req as any).admin = admin;
     next();
   } catch (error: any) {
-    //если токен недействителен то 403
-    res.sendStatus(403);
+    if (error.message === 'Token expired') {
+      return res.sendStatus(403); //отправляем 403 если токен истек
+    }
+    return res.sendStatus(403);
   }
 }

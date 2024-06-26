@@ -28,7 +28,7 @@ const tailFormItemLayout = {
   },
 };
 
-export default function adminRegistration() {
+export default function AdminRegistration() {
   const [form] = Form.useForm();
 
   const onFinish = async (values: any) => {

@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
-
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
-import { Button, Form, Input } from "antd";
-import { loginAdmin } from "../http/authAPI";
+import { Button, Form, Input, message } from "antd";
 import { useRouter } from "next/router";
+import { useLoginAdmin } from "../hooks/useAuth";
 
-export default function loginPage() {
+export default function LoginPage() {
   const [form] = Form.useForm();
   const [clientReady, setClientReady] = useState<boolean>(false);
   const router = useRouter();
+  const { loginAdminHook, loading, error } = useLoginAdmin();
 
   // To disable submit button at the beginning.
   useEffect(() => {
@@ -19,23 +19,23 @@ export default function loginPage() {
     try {
       const { login, password } = values;
       console.log("Данные формы:", { login, password });
-      const response = await loginAdmin({ login, password });
+      const response = await loginAdminHook({ login, password });
 
       // Сохранение токена в localStorage
       localStorage.setItem("token", response.token);
 
-      // Вывод алерта после успешного входа
-      alert("Вы успешно вошли в систему!");
+      //вывод сообщения после успешного входа
+      message.success("You have successfully logged in!");
       router.push("/panel");
 
-      // Очистка формы после успешного входа
+      //очистка формы после успешного входа
       form.resetFields();
     } catch (error: any) {
       console.error("Ошибка входа:", error);
-      alert("Ошибка входа: " + error.message);
+      //вывод сообщения об ошибке входа
+      message.error(`Login error: ${error.message}`);
     }
   };
-
 
   return (
     <Form
