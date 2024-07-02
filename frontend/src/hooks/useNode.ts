@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import Node, { createNodeAPI, getAllNodesAPI } from "../http/nodeAPI";
 
-// Хук для создания цепочки узлов
+//созданиe узлов
 export function useCreateNodeChain() {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<Error | null>(null);
@@ -9,7 +9,9 @@ export function useCreateNodeChain() {
   const createNodeChainHook = async (nodes: Node[]) => {
     setLoading(true);
     try {
-      const responses = await Promise.all(nodes.map(node => createNodeAPI(node)));
+      const responses = await Promise.all(
+        nodes.map((node) => createNodeAPI(node))
+      );
       setLoading(false);
       return responses;
     } catch (err: any) {
@@ -22,7 +24,7 @@ export function useCreateNodeChain() {
   return { createNodeChainHook, loading, error };
 }
 
-// Хук для получения всех узлов
+//для получения всех узлов
 export function useGetAllNodes() {
   const [nodes, setNodes] = useState<Node[]>([]);
   const [loading, setLoading] = useState<boolean>(false);

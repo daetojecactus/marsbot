@@ -1,17 +1,26 @@
 import { host } from "./index";
 
-export default interface Admin {
-  id: number;
-  login: string;
-  role: string;
-  firstName: string;
-  lastName: string;
-  mail: string;
-}
+export default interface User {
+    id: number;
+    key: string;
+    firstName: string;
+    lastName: string;
+    department: string;
+    mail: string;
+  }
 
-export const createAdminAPI = async (admin: Admin) => {
+export const createUserAPI = async (user: User) => {
   try {
-    const { data } = await host.post("/api/admin", admin);
+    const { data } = await host.post("api/user", user);
+    return data;
+  } catch (error) {
+    throw new Error("Ошибка при отправке запроса");
+  }
+};
+
+export const OneUserInfoAPI = async (id: number) => {
+  try {
+    const { data } = await host.get(`/api/user/${id}`);
     console.log("Ответ от сервера:", data);
     return data;
   } catch (error) {
@@ -19,9 +28,9 @@ export const createAdminAPI = async (admin: Admin) => {
   }
 };
 
-export const OneAdminInfoAPI = async (id: number) => {
+export const AllUsersInfoAPI = async () => {
   try {
-    const { data } = await host.get(`/api/admin/${id}`);
+    const { data } = await host.get("/api/user");
     console.log("Ответ от сервера:", data);
     return data;
   } catch (error) {
@@ -29,9 +38,9 @@ export const OneAdminInfoAPI = async (id: number) => {
   }
 };
 
-export const AllAdminsInfoAPI = async () => {
+export const updateUserAPI = async (id: number, user: User) => {
   try {
-    const { data } = await host.get("/api/admin");
+    const { data } = await host.put(`/api/user/${id}`, user);
     console.log("Ответ от сервера:", data);
     return data;
   } catch (error) {
@@ -39,19 +48,9 @@ export const AllAdminsInfoAPI = async () => {
   }
 };
 
-export const updateAdminAPI = async (id: number, admin: Admin) => {
+export const deleteUserAPI = async (id: number) => {
   try {
-    const { data } = await host.put(`/api/admin/${id}`, admin);
-    console.log("Ответ от сервера:", data);
-    return data;
-  } catch (error) {
-    throw new Error("Ошибка при отправке запроса");
-  }
-};
-
-export const deleteAdminAPI = async (id: number) => {
-  try {
-    const { data } = await host.delete(`/api/admin/${id}`);
+    const { data } = await host.delete(`/api/user/${id}`);
     console.log("Ответ от сервера:", data);
     return data;
   } catch (error) {

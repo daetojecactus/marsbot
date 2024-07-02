@@ -1,0 +1,108 @@
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  &__box {
+    padding: 0 16px;
+  }
+
+  &__btn {
+    border: none;
+    background-color: transparent;
+    box-shadow: none;
+    font-size: 16px;
+  }
+
+  &__info {
+    margin: 0;
+  }
+}
+
+.side {
+  &__title .ant-drawer-title {
+    font-size: 22px;
+    text-align: center;
+  }
+
+  &__item {
+    padding: 15px;
+    font-size: 16px;
+  }
+
+  &__btn {
+    padding: 20px;
+    margin-top: 30px;
+    font-size: 16px;
+  }
+}
+
+
+.form-main ,
+.reset,
+.registartion {
+width: 100%;
+min-height: 100vh;
+display: flex;
+justify-content: center;
+align-items: center;
+
+&__box {
+  max-width: 500px;
+  width: 100%;
+}
+
+  &__form {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__form .ant-form-item .ant-form-item-control-input,
+  &__form .ant-form-item .ant-form-item-control-input-content,
+  &__item  {
+    min-height: 50px;
+  }
+
+  &__item {
+    margin-bottom: 25px;
+  }
+
+  &__input {
+    min-height: 50px;
+    font-size: 16px;
+  }
+
+  &__select {
+    min-height: 50px;
+  }
+
+  &__option {
+    min-height: 50px !important;
+    font-size: 16px !important;
+    align-items: center;
+  }
+
+  &__btn {
+    padding: 2px 30px;
+    min-height: 50px;
+    font-size: 16px;
+  }
+}
+
+.registartion {
+  &__box {
+    max-width: 600px;
+  }
+}
+
+// .ant-select-dropdown .ant-select-item {
+//   min-height: 50px;
+// }
+
+.ant-select-single {
+  min-height: 50px;
+  font-size: 16px;
+}
+
+.ant-select-single .ant-select-selector {
+  font-size: 16px;
+}

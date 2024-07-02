@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 import cors from 'cors';
 import router from './routes/index';
 import { sequelize } from './db';
+import path from 'path';
 
 dotenv.config();
 
@@ -14,17 +15,6 @@ app.use(express.json());
 
 //подключаем роутеры
 app.use('/api', router);
-
-// sequelize
-//   .sync({ force: true })
-//   .then(() => {
-//     app.listen(PORT, () => {
-//       console.log(`Server is running on port ${PORT}`);
-//     });
-//   })
-//   .catch((err) => {
-//     console.error('Unable to connect to the database:', err);
-//   });
 
 async function startServer() {
   try {

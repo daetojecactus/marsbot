@@ -5,21 +5,49 @@ import {
   UploadOutlined,
   UserOutlined,
   VideoCameraOutlined,
+  EditOutlined,
+  EllipsisOutlined,
+  SettingOutlined,
 } from "@ant-design/icons";
-import { Button, Layout, Menu, theme } from "antd";
-import { useOneAdminInfo } from "../../hooks/useAdmin";
+import {
+  Button,
+  Layout,
+  Menu,
+  theme,
+  Card,
+  Col,
+  Row,
+  Skeleton,
+  Avatar,
+} from "antd";
+
+import { useAllAdminsInfo } from "../../../hooks/useAdmin";
 import HeaderInfo from "@/components/headerInfo";
+import Admin from "../../../http/adminAPI";
 
 const { Header, Sider, Content } = Layout;
+const { Meta } = Card;
 
-export default function PanelPage() {
+export default function AdminPanel() {
   const [collapsed, setCollapsed] = useState(false);
 
   const {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
 
-  const { oneAdminInfoHook: adminInfo, loading, error } = useOneAdminInfo();
+  const {
+    allAdminsInfoHook: allAdminsInfo,
+    loading,
+    error,
+  } = useAllAdminsInfo();
+
+  const adminsArray: Admin[] = [...allAdminsInfo];
+
+  const adminRoles: { [key: string]: string } = {
+    1: "Super Admin",
+    2: "Admin",
+    3: "Observer",
+  };
 
   return (
     <Layout style={{ minHeight: "100vh" }}>
@@ -28,7 +56,7 @@ export default function PanelPage() {
         <Menu
           theme="dark"
           mode="inline"
-          defaultSelectedKeys={["1"]}
+          defaultSelectedKeys={["2"]}
           items={[
             {
               key: "1",
@@ -38,7 +66,7 @@ export default function PanelPage() {
             {
               key: "2",
               icon: <VideoCameraOutlined />,
-              label: "nav 2",
+              label: "Admins",
             },
             {
               key: "3",
@@ -73,20 +101,29 @@ export default function PanelPage() {
             borderRadius: borderRadiusLG,
           }}
         >
-          {loading ? (
-            <p>Loading...</p>
-          ) : error ? (
-            <p>Error: {error.message}</p>
-          ) : adminInfo ? (
-            <div>
-              <h2>Admin Information</h2>
-              <p>ID: {adminInfo.id}</p>
-              <p>Login: {adminInfo.login}</p>
-              <p>Role: {adminInfo.role}</p>
-            </div>
-          ) : (
-            <p>No admin information available</p>
-          )}
+          <Row gutter={[16, 16]}>
+            {adminsArray.map((admin) => (
+              <Col span={8} key={admin.id}>
+                <Card
+                  actions={[
+                    <SettingOutlined key="setting" />,
+                    <EditOutlined key="edit" />,
+                    <EllipsisOutlined key="ellipsis" />,
+                  ]}
+                >
+                  <Skeleton loading={loading} avatar active>
+                    <Meta
+                      avatar={
+                        <Avatar src="https://api.dicebear.com/7.x/miniavs/svg?seed=2" />
+                      }
+                      title={adminRoles[admin.role]}
+                      description={`${admin.firstName} ${admin.lastName}`}
+                    />
+                  </Skeleton>
+                </Card>
+              </Col>
+            ))}
+          </Row>
         </Content>
       </Layout>
     </Layout>

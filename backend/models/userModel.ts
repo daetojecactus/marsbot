@@ -16,7 +16,12 @@ const User = sequelize.define(
       primaryKey: true,
     },
     //имя пользователя
-    name: {
+    firstName: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    //фамилия пользователя
+    lastName: {
       type: DataTypes.STRING,
       allowNull: false,
     },
@@ -25,10 +30,10 @@ const User = sequelize.define(
       type: DataTypes.STRING,
       allowNull: false,
     },
-    //соц сети
-    social: {
+    //почта
+    mail: {
       type: DataTypes.STRING,
-      allowNull: true,
+      allowNull: false,
     },
   },
   {

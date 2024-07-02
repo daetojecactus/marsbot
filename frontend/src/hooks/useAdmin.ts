@@ -1,4 +1,4 @@
-import Admin, { createAdminAPI, OneAdminInfoAPI } from "../http/adminAPI";
+import Admin, { createAdminAPI, OneAdminInfoAPI, AllAdminsInfoAPI } from "../http/adminAPI";
 import { useState, useEffect } from "react";
 import { jwtDecode } from "jwt-decode";
 
@@ -55,4 +55,29 @@ export function useOneAdminInfo() {
   }, []);
 
   return { oneAdminInfoHook, loading, error };
+}
+
+//получаем всех админов
+export function useAllAdminsInfo() {
+  const [allAdminsInfoHook, setAllAdminsInfoHook] = useState<Admin[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<Error | null>(null);
+
+  const fetchAdmins = async () => {
+    setLoading(true);
+    try {
+      const response = await AllAdminsInfoAPI();
+      setAllAdminsInfoHook(response);
+      setLoading(false);
+    } catch (err: any) {
+      setError(err)
+      setLoading(false)
+    }
+  }
+
+  useEffect(() => {
+    fetchAdmins()
+  }, []);
+
+  return {allAdminsInfoHook, loading, error}
 }

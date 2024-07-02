@@ -1,7 +1,9 @@
 import { useState, useEffect } from "react";
-import AdminCredentials, { loginAdminAPI, resetPasswordAdminAPI } from "../http/authAPI";
-import { useOneAdminInfo } from './useAdmin';
-
+import AdminCredentials, {
+  loginAdminAPI,
+  resetPasswordAdminAPI,
+} from "../http/authAPI";
+import { useOneAdminInfo } from "./useAdmin";
 
 //хук для авторизации
 export function useLoginAdmin() {
@@ -24,34 +26,32 @@ export function useLoginAdmin() {
   return { loginAdminHook, loading, error };
 }
 
-
 //хук для смены пароля у админа
 export function useResetPasswordAdmin() {
-    const [loading, setLoading] = useState<boolean>(false);
-    const [error, setError] = useState<Error | null>(null);
-    const { oneAdminInfoHook } = useOneAdminInfo();
-  
-    const resetPassword = async (newPassword: string) => {
-      setLoading(true);
-      try {
-        if (!oneAdminInfoHook) {
-          throw new Error('Admin information not available');
-        }
-        const { id } = oneAdminInfoHook;
-        const token = localStorage.getItem("token");
-        if (token === null) {
-          throw new Error("No token found");
-        }
-        const response = await resetPasswordAdminAPI(id, newPassword, token);
-        setLoading(false);
-        return response;
-      } catch (err: any) {
-        setError(err);
-        setLoading(false);
-        throw err;
+  const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<Error | null>(null);
+  const { oneAdminInfoHook } = useOneAdminInfo();
+
+  const resetPassword = async (newPassword: string) => {
+    setLoading(true);
+    try {
+      if (!oneAdminInfoHook) {
+        throw new Error("Admin information not available");
       }
-    };
-  
-    return { resetPassword, loading, error };
-  }
-  
+      const { id } = oneAdminInfoHook;
+      const token = localStorage.getItem("token");
+      if (token === null) {
+        throw new Error("No token found");
+      }
+      const response = await resetPasswordAdminAPI(id, newPassword, token);
+      setLoading(false);
+      return response;
+    } catch (err: any) {
+      setError(err);
+      setLoading(false);
+      throw err;
+    }
+  };
+
+  return { resetPassword, loading, error };
+}
